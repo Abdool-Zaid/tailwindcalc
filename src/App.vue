@@ -1,47 +1,73 @@
 <script setup>
+let concentric = ["valuesPrimitive", "operatorsPrimitive", "operatorsAdvance"];
+function forEach(array, script) {
+  for (const child of array) {
+    script;
+  }
+}
+function getElementID(event) {
+  let id = "#" + event.target.id;
+  return id;
+}
 function loadFunc() {
   let center = document.querySelector("#centerButton").getBoundingClientRect();
   let xCoor = center.x;
   let yCoor = center.y;
   let width = center.width / 2;
   let height = center.height / 2;
-  let centerCoor = { x: xCoor + width, y: yCoor + height };
-  // document.querySelectorAll('*').forEach(Element=>{
-  //   Element.style=`
-  // position: fixed;
-  // left: ${centerCoor.x};
-  // top:${centerCoor.y} ;`
-  // })
-
-  console.log(document.querySelectorAll("*").length);
+  let centerCoor = {
+    x: xCoor + width,
+    y: yCoor + height,
+    width: width,
+    height: height,
+  };
   return centerCoor;
 }
-function getElementID(event){
-  let id ='#'+event.target.id
-  return id
-}
 function defineRadials(event) {
-  console.log(getElementID(event))
+  let radials = document.querySelector(getElementID(event)).children;
+  let radialDivisions = document.querySelector(getElementID(event)).children
+    .length;
+  let radialAngle = 360 / radialDivisions;
+  let centerCoor = loadFunc();
+  let terminus = document
+    .querySelector(getElementID(event))
+    .getBoundingClientRect();
+  let radius = centerCoor.y - terminus.bottom;
+  let position = {
+    amount: radialDivisions,
+    angle: radialAngle,
+    radius: radius,
+    forEach: radials,
+  };
+  return position;
+}
+function positionRails() {
+  let h=loadFunc().x
+  let k=loadFunc().y
+  // need to define radius for each
+  // need to itterate x and y
+  
+let rail 
+//  Math.pow((x-h), 2)+Math.pow((y-k), 2)=Math.pow(radius, 2);
+  // (x−h)2+(y−k)2=r2 
+  console.log(k)
+  console.log(rail)
 }
 </script>
 
 <template>
-  <button @click="loadFunc()">//onload</button>
+  <button @click=" positionRails()">//onload</button>
   <div class="flex flex-col" id="main">
     <div class="flex">
       <div
         id="headDiv"
         class="bg-slate-400 rounded-full aspect-square w-1/2"
-        @click="defineRadials($event)"
       ></div>
       <div id="tearsleft" class="z-10"></div>
       <div id="tearsRight" class="z-10"></div>
     </div>
-    <div
-      id="bodyDiv"
-      class="valuesPrimitive bg-slate-400 rounded-full aspect-square"
-    >
-      <div class="valuesPrimitive bg-slate-400">
+    <div id="bodyDiv" class="bg-slate-400 rounded-full aspect-square">
+      <div class="bg-slate-400" id="valuesPrimitive">
         <button>0</button>
         <button>1</button>
         <button>2</button>
@@ -53,13 +79,13 @@ function defineRadials(event) {
         <button>8</button>
         <button>9</button>
       </div>
-      <div class="operators bg-slate-400">
+      <div class="bg-slate-400" id="operatorsPrimitive">
         <button>+</button>
         <button>-</button>
         <button>*</button>
         <button>/</button>
       </div>
-      <div class="operatorsAdvance bg-slate-400">
+      <div class="bg-slate-400" id="operatorsAdvance">
         <button>^</button>
         <button>(</button>
         <button>)</button>
@@ -86,12 +112,6 @@ header {
 .logo {
   display: block;
   margin: 0 auto 2rem;
-}
-
-nav {
-  position: fixed;
-  left: ;
-  top: ;
 }
 
 nav a.router-link-exact-active {
