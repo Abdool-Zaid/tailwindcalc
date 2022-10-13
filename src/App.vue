@@ -1,9 +1,30 @@
 <script setup>
+let data = [[], []];
+let i;
+let y;
+let yCoor;
+let x;
+let xCoor;
+let increments = [];
+let positionData;
+let convertToArray;
 let concentric = ["valuesPrimitive", "operatorsPrimitive", "operatorsAdvance"];
+
 function forEach(array, script) {
-  for (const child of array) {
+  for (let child of array) {
     script;
   }
+}
+function arrayToString(array) {
+  for (i = 0; i < array.length; i++) {
+    let string = "nameNO" + i;
+    data[1].push(array[i]);
+  }
+  return data;
+}
+function convertToID(name) {
+  let id = "#" + name;
+  return id;
 }
 function getElementID(event) {
   let id = "#" + event.target.id;
@@ -24,39 +45,63 @@ function loadFunc() {
   return centerCoor;
 }
 function defineRadials(event) {
-  let radials = document.querySelector(getElementID(event)).children;
-  let radialDivisions = document.querySelector(getElementID(event)).children
+  let radials = document.querySelector(convertToID(event)).children;
+  let radialDivisions = document.querySelector(convertToID(event)).children
     .length;
   let radialAngle = 360 / radialDivisions;
   let centerCoor = loadFunc();
   let terminus = document
-    .querySelector(getElementID(event))
+    .querySelector(convertToID(event))
     .getBoundingClientRect();
   let radius = centerCoor.y - terminus.bottom;
+  for (i = 0; i < radialDivisions; i++) {
+    x = i;
+    y = i;
+    yCoor = centerCoor.y - Math.sqrt(Math.pow(-1*centerCoor.x, 2) + 2 * centerCoor.x * x + Math.pow(radius,2) - Math.pow(x,2));
+    xCoor = centerCoor.x - Math.sqrt(Math.pow(-1*centerCoor.y, 2) + 2 * centerCoor.y * y + Math.pow(radius,2) - Math.pow(y,2));
+    increments.push({x:xCoor, y:yCoor})
+  }
+  // let indexGetter = data[1].filter((position) => position == event)[0];
+  let indexGetter = data[1].findIndex(item => item === event)
+data[indexGetter].push(increments)
+increments=[]
   let position = {
     amount: radialDivisions,
     angle: radialAngle,
     radius: radius,
     forEach: radials,
+    positions: increments,
   };
   return position;
 }
 function positionRails() {
-  let h=loadFunc().x
-  let k=loadFunc().y
-  // need to define radius for each
-  // need to itterate x and y
-  
-let rail 
-//  Math.pow((x-h), 2)+Math.pow((y-k), 2)=Math.pow(radius, 2);
-  // (x−h)2+(y−k)2=r2 
-  console.log(k)
-  console.log(rail)
+  let h = loadFunc().x;
+  let k = loadFunc().y;
+  let rail;
+  let positions = arrayToString(concentric);
+  // get all controlls
+  for (i = 0; i < positions[1].length; i++) {
+    convertToArray = defineRadials(positions[1][i]);
+
+    //   position = {
+    //   amount: radialDivisions,
+    //   angle: radialAngle,
+    //   radius: radius,
+    //   forEach: radials,
+    // };
+
+    // data[0].push(positionData);
+  }
+  // return a postion array for each (matrix)
+  // place childern in order according to position array
+  // shift position based on scroll
+  //
+console.log(data[0])
 }
 </script>
 
 <template>
-  <button @click=" positionRails()">//onload</button>
+  <button @click="positionRails()">//onload</button>
   <div class="flex flex-col" id="main">
     <div class="flex">
       <div
