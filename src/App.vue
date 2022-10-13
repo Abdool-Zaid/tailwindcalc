@@ -1,23 +1,15 @@
 <script setup>
 let data = [[], []];
+let xValues = [];
+let yValues = [];
 let i;
-let y;
-let yCoor;
-let x;
-let xCoor;
-let increments = [];
-let positionData;
-let convertToArray;
+let increments;
+let convertToArray
 let concentric = ["valuesPrimitive", "operatorsPrimitive", "operatorsAdvance"];
 
-function forEach(array, script) {
-  for (let child of array) {
-    script;
-  }
-}
 function arrayToString(array) {
   for (i = 0; i < array.length; i++) {
-    let string = "nameNO" + i;
+    data[0].push([])
     data[1].push(array[i]);
   }
   return data;
@@ -26,10 +18,7 @@ function convertToID(name) {
   let id = "#" + name;
   return id;
 }
-function getElementID(event) {
-  let id = "#" + event.target.id;
-  return id;
-}
+
 function loadFunc() {
   let center = document.querySelector("#centerButton").getBoundingClientRect();
   let xCoor = center.x;
@@ -44,6 +33,14 @@ function loadFunc() {
   };
   return centerCoor;
 }
+
+function setCirclePoints(radius, steps, centerX, centerY) {
+  for (let i = 0; i < steps; i++) {
+    xValues.push(centerX + radius * Math.cos(2 * Math.PI * (i / steps)));
+    yValues.push(centerY + radius * Math.sin(2 * Math.PI * (i / steps)));
+  }
+}
+
 function defineRadials(event) {
   let radials = document.querySelector(convertToID(event)).children;
   let radialDivisions = document.querySelector(convertToID(event)).children
@@ -54,17 +51,11 @@ function defineRadials(event) {
     .querySelector(convertToID(event))
     .getBoundingClientRect();
   let radius = centerCoor.y - terminus.bottom;
-  for (i = 0; i < radialDivisions; i++) {
-    x = i;
-    y = i;
-    yCoor = centerCoor.y - Math.sqrt(Math.pow(-1*centerCoor.x, 2) + 2 * centerCoor.x * x + Math.pow(radius,2) - Math.pow(x,2));
-    xCoor = centerCoor.x - Math.sqrt(Math.pow(-1*centerCoor.y, 2) + 2 * centerCoor.y * y + Math.pow(radius,2) - Math.pow(y,2));
-    increments.push({x:xCoor, y:yCoor})
-  }
-  // let indexGetter = data[1].filter((position) => position == event)[0];
-  let indexGetter = data[1].findIndex(item => item === event)
-data[indexGetter].push(increments)
-increments=[]
+  setCirclePoints(radius, radialDivisions, centerCoor.x, centerCoor.y);
+  let indexGetter = data[1].findIndex((item) => item === event);
+  increments = { x: xValues, y: yValues };
+  data[0][indexGetter].push(increments);
+  increments = [];
   let position = {
     amount: radialDivisions,
     angle: radialAngle,
@@ -82,22 +73,16 @@ function positionRails() {
   // get all controlls
   for (i = 0; i < positions[1].length; i++) {
     convertToArray = defineRadials(positions[1][i]);
-
-    //   position = {
-    //   amount: radialDivisions,
-    //   angle: radialAngle,
-    //   radius: radius,
-    //   forEach: radials,
-    // };
-
-    // data[0].push(positionData);
   }
-  // return a postion array for each (matrix)
-  // place childern in order according to position array
-  // shift position based on scroll
-  //
-console.log(data[0])
-}
+    for (let child of defineRadials("valuesPrimitive").forEach) {
+        child.style = `
+   position: fixed;
+   left:${data[0][0][0].x[i]} ;
+     top: ${data[0][0][0].y[i]};
+     }
+     `;
+    }
+    }
 </script>
 
 <template>
@@ -168,9 +153,6 @@ nav a.router-link-exact-active:hover {
 }
 
 nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
 }
 
 nav a:first-of-type {
