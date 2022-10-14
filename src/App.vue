@@ -1,17 +1,16 @@
 <script setup>
-
 let data = [[], []];
 let xValues = [];
 let yValues = [];
 let i;
 let h;
 let increments;
-let convertToArray
+let convertToArray;
 let concentric = ["valuesPrimitive", "operatorsPrimitive", "operatorsAdvance"];
 
 function arrayToString(array) {
   for (i = 0; i < array.length; i++) {
-    data[0].push([])
+    data[0].push([]);
     data[1].push(array[i]);
   }
   return data;
@@ -37,22 +36,26 @@ function loadFunc() {
 }
 
 function setCirclePoints(radius, steps, centerX, centerY) {
-  xValues=[]
-  yValues=[]
-  for (let i = 0; i <= steps ; i++) {
-    xValues.push(Math.round( centerX + radius * Math.cos(2 * Math.PI * (i / steps))) + 'px');
-    yValues.push(Math.round( centerY + radius * Math.sin(2 * Math.PI * (i / steps))) + 'px');
+  xValues = [];
+  yValues = [];
+  for (let i = 0; i <= steps; i++) {
+    xValues.push(
+      Math.round(centerX + radius * Math.cos(2 * Math.PI * (i / steps))) + "px"
+    );
+    yValues.push(
+      Math.round(centerY + radius * Math.sin(2 * Math.PI * (i / steps))) + "px"
+    );
   }
 }
 function defineRadials(event) {
   let radials = document.querySelector(convertToID(event)).children;
   let radialDivisions = document.querySelector(convertToID(event)).children
-  .length;
+    .length;
   let radialAngle = 360 / radialDivisions;
   let centerCoor = loadFunc();
   let terminus = document
-  .querySelector(convertToID(event))
-  .getBoundingClientRect();
+    .querySelector(convertToID(event))
+    .getBoundingClientRect();
   let radius = centerCoor.y - terminus.bottom;
   setCirclePoints(radius, radialDivisions, centerCoor.x, centerCoor.y);
   let indexGetter = data[1].findIndex((item) => item === event);
@@ -72,12 +75,12 @@ function positionRails() {
   let positions = arrayToString(concentric);
   for (i = 0; i < positions[1].length; i++) {
     convertToArray = defineRadials(positions[1][i]);
-    h=0
+    h = 0;
     for (let child of defineRadials(positions[1][i]).forEach) {
-      h ++
+      h++;
       child.style = `
-      position: fixed;
-      left:${data[0][i][0].x[h]} ;
+      position: absolute;
+      left:${data[0][i][0].x[h]};
       top: ${data[0][i][0].y[h]};
       `;
     }
@@ -122,7 +125,11 @@ function positionRails() {
         <button>√</button>
         <button>π</button>
       </div>
-      <button class="rounded-full bg-slate-200 aspect-square" id="centerButton" @click="positionRails()">
+      <button
+        class="rounded-full bg-slate-200 aspect-square"
+        id="centerButton"
+        @click="positionRails()"
+      >
         =
       </button>
     </div>
@@ -131,57 +138,30 @@ function positionRails() {
 
 <style scoped>
 * {
-  padding: 0;
+  padding: 0 ;
   margin: 0;
+  box-sizing: border-box;
 }
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
 #centerButton {
-position: fixed;
-left: 50%;
-top: 50%;
-transform: translate(-50%,-50%);
+  position: fixed;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
 }
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
+#headDiv {
+  width: 20vw;
+  aspect-ratio: 1;
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+#bodyDiv {
+  width: 30vw;
+  aspect-ratio: 1;
+  position: fixed;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
 }
 </style>
