@@ -1,4 +1,5 @@
 <script setup>
+
 let data = [[], []];
 let xValues = [];
 let yValues = [];
@@ -29,7 +30,7 @@ function defineBands(){
   let yCoor =loadFunc().y
   let bandNo=concentric.length
   for(i=0;i<bandNo;i++){
-    
+
     console.trace(i)
   }
 }
@@ -59,7 +60,9 @@ function loadFunc() {
   };
   return centerCoor;
 }
-
+function testFunc(){
+  window.close()
+}
 function setCirclePoints(radius, steps, centerX, centerY) {
   xValues = [];
   yValues = [];
@@ -115,7 +118,7 @@ function positionRails() {
 </script>
 
 <template>
-  <button @click="positionRails()">//onload</button>
+  <button @click="testFunc()">//onload</button>
   <div class="flex flex-col" id="main">
     <div class="flex">
       <div
@@ -156,7 +159,7 @@ function positionRails() {
       <button
         class="rounded-full bg-slate-200 aspect-square"
         id="centerButton"
-        @click="positionRails()"
+        @click="testFunc()"
       >
         =
       </button>
