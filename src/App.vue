@@ -1,8 +1,10 @@
 <script setup>
+
 let data = [[], []];
 let xValues = [];
 let yValues = [];
 let i;
+let h;
 let increments;
 let convertToArray
 let concentric = ["valuesPrimitive", "operatorsPrimitive", "operatorsAdvance"];
@@ -36,15 +38,14 @@ function loadFunc() {
 
 function setCirclePoints(radius, steps, centerX, centerY) {
   for (let i = 0; i < steps; i++) {
-    xValues.push(centerX + radius * Math.cos(2 * Math.PI * (i / steps)));
-    yValues.push(centerY + radius * Math.sin(2 * Math.PI * (i / steps)));
+    xValues.push(Math.round( centerX + radius * Math.cos(2 * Math.PI * (i / steps))) + 'px');
+    yValues.push(Math.round( centerY + radius * Math.sin(2 * Math.PI * (i / steps))) + 'px');
   }
 }
-
+ + 'px'
 function defineRadials(event) {
   let radials = document.querySelector(convertToID(event)).children;
-  let radialDivisions = document.querySelector(convertToID(event)).children
-    .length;
+  let radialDivisions = document.querySelector(convertToID(event)).children.length;
   let radialAngle = 360 / radialDivisions;
   let centerCoor = loadFunc();
   let terminus = document
@@ -66,22 +67,20 @@ function defineRadials(event) {
   return position;
 }
 function positionRails() {
-  let h = loadFunc().x;
-  let k = loadFunc().y;
-  let rail;
   let positions = arrayToString(concentric);
-  // get all controlls
   for (i = 0; i < positions[1].length; i++) {
     convertToArray = defineRadials(positions[1][i]);
-  }
-    for (let child of defineRadials("valuesPrimitive").forEach) {
-        child.style = `
-   position: fixed;
-   left:${data[0][0][0].x[i]} ;
-     top: ${data[0][0][0].y[i]};
-     }
-     `;
+    h=0
+    for (let child of defineRadials(positions[1][i]).forEach) {
+      h ++
+      child.style = `
+      position: fixed;
+      left:${data[0][i][0].x[h]} ;
+      top: ${data[0][i][0].y[h]};
     }
+    `;
+  }
+}
     }
 </script>
 
@@ -122,7 +121,7 @@ function positionRails() {
         <button>√</button>
         <button>π</button>
       </div>
-      <button class="rounded-full bg-slate-200 aspect-square" id="centerButton">
+      <button class="rounded-full bg-slate-200 aspect-square" id="centerButton" @click="positionRails()">
         =
       </button>
     </div>
@@ -139,9 +138,11 @@ header {
   max-height: 100vh;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+#centerButton {
+position: fixed;
+left: 50%;
+top: 50%;
+transform: translate(-50%,-50%);
 }
 
 nav a.router-link-exact-active {
@@ -150,9 +151,6 @@ nav a.router-link-exact-active {
 
 nav a.router-link-exact-active:hover {
   background-color: transparent;
-}
-
-nav a {
 }
 
 nav a:first-of-type {
