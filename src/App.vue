@@ -2,12 +2,37 @@
 let data = [[], []];
 let xValues = [];
 let yValues = [];
+let sum = '';
 let i;
 let h;
 let increments;
 let convertToArray;
 let concentric = ["valuesPrimitive", "operatorsPrimitive", "operatorsAdvance"];
-
+function buildExpression(char) {
+  sum += char;
+  document.querySelector("#outputView").innerHTML = sum;
+}
+function calcSum(){
+    sum=eval(sum);
+    document.getElementById("output").innerHTML= null;
+    document.getElementById("output").innerHTML = sum;
+}
+function returnToVoid(){
+    document.getElementById("output").innerHTML= null; 
+     sum = '';
+}
+//define bands
+// define radii, one for each control band
+// store radius in defineRadials function
+function defineBands(){
+  let xCoor =loadFunc().x
+  let yCoor =loadFunc().y
+  let bandNo=concentric.length
+  for(i=0;i<bandNo;i++){
+    
+    console.trace(i)
+  }
+}
 function arrayToString(array) {
   for (i = 0; i < array.length; i++) {
     data[0].push([]);
@@ -73,6 +98,7 @@ function defineRadials(event) {
 }
 function positionRails() {
   let positions = arrayToString(concentric);
+  defineBands()
   for (i = 0; i < positions[1].length; i++) {
     convertToArray = defineRadials(positions[1][i]);
     h = 0;
@@ -95,11 +121,7 @@ function positionRails() {
       <div
         id="headDiv"
         class="bg-slate-400 rounded-full aspect-square w-1/2"
-      ></div>
-      <div id="tearsleft" class="z-10"></div>
-      <div id="tearsRight" class="z-10"></div>
-    </div>
-    <div id="bodyDiv" class="bg-slate-400 rounded-full aspect-square">
+      >
       <div class="bg-slate-400" id="valuesPrimitive">
         <button>0</button>
         <button>1</button>
@@ -125,6 +147,12 @@ function positionRails() {
         <button>√</button>
         <button>π</button>
       </div>
+    
+    </div>
+      <div id="tearsleft" class="z-10"></div>
+      <div id="tearsRight" class="z-10"></div>
+    </div>
+    <div id="bodyDiv" class="bg-slate-400 rounded-full aspect-square">
       <button
         class="rounded-full bg-slate-200 aspect-square"
         id="centerButton"
@@ -151,9 +179,6 @@ function positionRails() {
 #headDiv {
   width: 20vw;
   aspect-ratio: 1;
-  position: fixed;
-  top: 25%;
-  left: 50%;
   transform: translate(-50%, -50%);
 }
 #bodyDiv {
