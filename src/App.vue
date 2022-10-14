@@ -42,19 +42,17 @@ function setCirclePoints(radius, steps, centerX, centerY) {
   for (let i = 0; i <= steps ; i++) {
     xValues.push(Math.round( centerX + radius * Math.cos(2 * Math.PI * (i / steps))) + 'px');
     yValues.push(Math.round( centerY + radius * Math.sin(2 * Math.PI * (i / steps))) + 'px');
-
   }
 }
- + 'px'
 function defineRadials(event) {
   let radials = document.querySelector(convertToID(event)).children;
   let radialDivisions = document.querySelector(convertToID(event)).children
-    .length;
+  .length;
   let radialAngle = 360 / radialDivisions;
   let centerCoor = loadFunc();
   let terminus = document
-    .querySelector(convertToID(event))
-    .getBoundingClientRect();
+  .querySelector(convertToID(event))
+  .getBoundingClientRect();
   let radius = centerCoor.y - terminus.bottom;
   setCirclePoints(radius, radialDivisions, centerCoor.x, centerCoor.y);
   let indexGetter = data[1].findIndex((item) => item === event);
