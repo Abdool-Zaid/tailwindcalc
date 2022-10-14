@@ -37,15 +37,19 @@ function loadFunc() {
 }
 
 function setCirclePoints(radius, steps, centerX, centerY) {
-  for (let i = 0; i < steps; i++) {
+  xValues=[]
+  yValues=[]
+  for (let i = 0; i <= steps ; i++) {
     xValues.push(Math.round( centerX + radius * Math.cos(2 * Math.PI * (i / steps))) + 'px');
     yValues.push(Math.round( centerY + radius * Math.sin(2 * Math.PI * (i / steps))) + 'px');
+
   }
 }
  + 'px'
 function defineRadials(event) {
   let radials = document.querySelector(convertToID(event)).children;
-  let radialDivisions = document.querySelector(convertToID(event)).children.length;
+  let radialDivisions = document.querySelector(convertToID(event)).children
+    .length;
   let radialAngle = 360 / radialDivisions;
   let centerCoor = loadFunc();
   let terminus = document
@@ -77,11 +81,10 @@ function positionRails() {
       position: fixed;
       left:${data[0][i][0].x[h]} ;
       top: ${data[0][i][0].y[h]};
+      `;
     }
-    `;
   }
 }
-    }
 </script>
 
 <template>
