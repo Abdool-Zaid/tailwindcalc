@@ -1,37 +1,37 @@
 <script setup>
-
 let data = [[], []];
 let xValues = [];
 let yValues = [];
-let sum = '';
+let sum = "";
 let i;
 let h;
 let increments;
-let convertToArray;
+let x;
+let y;
+let convertToArray ;
 let concentric = ["valuesPrimitive", "operatorsPrimitive", "operatorsAdvance"];
 function buildExpression(char) {
   sum += char;
   document.querySelector("#outputView").innerHTML = sum;
 }
-function calcSum(){
-    sum=eval(sum);
-    document.getElementById("output").innerHTML= null;
-    document.getElementById("output").innerHTML = sum;
+function calcSum() {
+  sum = eval(sum);
+  document.getElementById("output").innerHTML = null;
+  document.getElementById("output").innerHTML = sum;
 }
-function returnToVoid(){
-    document.getElementById("output").innerHTML= null; 
-     sum = '';
+function returnToVoid() {
+  document.getElementById("output").innerHTML = null;
+  sum = "";
 }
 //define bands
 // define radii, one for each control band
 // store radius in defineRadials function
-function defineBands(){
-  let xCoor =loadFunc().x
-  let yCoor =loadFunc().y
-  let bandNo=concentric.length
-  for(i=0;i<bandNo;i++){
-
-    console.trace(i)
+function defineBands() {
+  let xCoor = loadFunc().x;
+  let yCoor = loadFunc().y;
+  let bandNo = concentric.length;
+  for (i = 0; i < bandNo; i++) {
+    console.trace(i);
   }
 }
 function arrayToString(array) {
@@ -60,9 +60,7 @@ function loadFunc() {
   };
   return centerCoor;
 }
-function testFunc(){
-  window.close()
-}
+
 function setCirclePoints(radius, steps, centerX, centerY) {
   xValues = [];
   yValues = [];
@@ -73,6 +71,26 @@ function setCirclePoints(radius, steps, centerX, centerY) {
     yValues.push(
       Math.round(centerY + radius * Math.sin(2 * Math.PI * (i / steps))) + "px"
     );
+  }
+}
+function bresenhamAlgorithm(xCoor, yCoor) {
+  convertToArray = [];
+  x = xCoor;
+  y = yCoor;
+  convertToArray = [
+    [x, y],
+    [y, x],
+    [x, -y],
+    [y, -x],
+    [-y, -x],
+    [-x, -y],
+    [-x, y],
+    [-y, x],
+  ];
+  for (i = 0; i < 8; i++) {
+convertToArray[i]=[]
+convertToArray[i].push([],[])
+    console.table(convertToArray);
   }
 }
 function defineRadials(event) {
@@ -100,8 +118,9 @@ function defineRadials(event) {
   return position;
 }
 function positionRails() {
+  bresenhamAlgorithm(3, 2);
   let positions = arrayToString(concentric);
-  defineBands()
+  defineBands();
   for (i = 0; i < positions[1].length; i++) {
     convertToArray = defineRadials(positions[1][i]);
     h = 0;
@@ -118,40 +137,36 @@ function positionRails() {
 </script>
 
 <template>
-  <button @click="testFunc()">//onload</button>
+  <button @click="positionRails()">//onload</button>
   <div class="flex flex-col" id="main">
     <div class="flex">
-      <div
-        id="headDiv"
-        class="bg-slate-400 rounded-full aspect-square w-1/2"
-      >
-      <div class="bg-slate-400" id="valuesPrimitive">
-        <button>0</button>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>4</button>
-        <button>5</button>
-        <button>6</button>
-        <button>7</button>
-        <button>8</button>
-        <button>9</button>
+      <div id="headDiv" class="bg-slate-400 rounded-full aspect-square w-1/2">
+        <div class="bg-slate-400" id="valuesPrimitive">
+          <button>0</button>
+          <button>1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>4</button>
+          <button>5</button>
+          <button>6</button>
+          <button>7</button>
+          <button>8</button>
+          <button>9</button>
+        </div>
+        <div class="bg-slate-400" id="operatorsPrimitive">
+          <button>+</button>
+          <button>-</button>
+          <button>*</button>
+          <button>/</button>
+        </div>
+        <div class="bg-slate-400" id="operatorsAdvance">
+          <button>^</button>
+          <button>(</button>
+          <button>)</button>
+          <button>√</button>
+          <button>π</button>
+        </div>
       </div>
-      <div class="bg-slate-400" id="operatorsPrimitive">
-        <button>+</button>
-        <button>-</button>
-        <button>*</button>
-        <button>/</button>
-      </div>
-      <div class="bg-slate-400" id="operatorsAdvance">
-        <button>^</button>
-        <button>(</button>
-        <button>)</button>
-        <button>√</button>
-        <button>π</button>
-      </div>
-    
-    </div>
       <div id="tearsleft" class="z-10"></div>
       <div id="tearsRight" class="z-10"></div>
     </div>
@@ -159,7 +174,7 @@ function positionRails() {
       <button
         class="rounded-full bg-slate-200 aspect-square"
         id="centerButton"
-        @click="testFunc()"
+        @click="positionRails()"
       >
         =
       </button>
@@ -169,7 +184,7 @@ function positionRails() {
 
 <style scoped>
 * {
-  padding: 0 ;
+  padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
